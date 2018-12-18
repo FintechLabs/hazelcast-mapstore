@@ -1,0 +1,38 @@
+group 'com.fintechlabs'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Person MapStore',
+                'Implementation-Version': version,
+                'Main-Class': 'com.fintechlabs.TestPerson'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+repositories {
+    mavenCentral()
+}
+
+task exportJar << {
+    copy {
+        from "build/libs/hazelcastLoader-all-1.0-SNAPSHOT.jar"
+        into "/Users/hitenpratap/Desktop/p2p/address-demo/lib"
+    }
+}
+
+fatJar.finalizedBy(exportJar)
+
+dependencies {
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
+    compile group: 'com.hazelcast', name: 'hazelcast-all', version: '3.11'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
