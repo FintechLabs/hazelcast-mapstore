@@ -26,7 +26,7 @@ public class ResultSetIterator<T> implements Iterator<T>, Closeable {
     @Override
     public T next() {
         try {
-            return (T) resultSet.getObject(1);
+            return (T) resultSet.getObject("unique_id");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

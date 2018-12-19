@@ -38,7 +38,7 @@ public class PersonMapStore implements MapStore<String, Person> {
     public synchronized void store(String key, Person person) {
         System.out.println("*******************************         Storing Key => " + key + " into SQL Database     *******************************");
         try {
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT into person_domain(version, date_created, email_address, first_name, last_name, last_updated, phone_number, unique_id) VALUE(?, ?, ?, ?, ?, ?, ?, ?)",
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO person_domain(version, date_created, email_address, first_name, last_name, last_updated, phone_number, unique_id) VALUE(?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, 0);
             Timestamp dateCreated = new Timestamp(person.getDateCreated().getTime());
@@ -90,6 +90,7 @@ public class PersonMapStore implements MapStore<String, Person> {
             System.out.println("******************************      Loading Key " + key + " into hazelCast          ******************************");
             result.put(key, load(key));
         }
+        System.out.println("***********************         Total Key Size Map in loadAll()     ====>>>>>       " + result.toString());
         return result;
     }
 
